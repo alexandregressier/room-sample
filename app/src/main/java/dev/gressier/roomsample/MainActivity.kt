@@ -10,37 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dev.gressier.roomsample.data.local.AppDatabase
+import dev.gressier.roomsample.ui.SampleScreen
+import dev.gressier.roomsample.ui.state.SampleScreenViewModel
 import dev.gressier.roomsample.ui.theme.RoomSampleTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val myEntityDao = AppDatabase.getDatabase(applicationContext).myEntityDao()
+        val viewModel = SampleScreenViewModel(myEntityDao)
+
         setContent {
             RoomSampleTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+               SampleScreen(viewModel = viewModel)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    RoomSampleTheme {
-        Greeting("Android")
     }
 }
